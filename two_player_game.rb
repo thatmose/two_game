@@ -78,7 +78,7 @@ class TwoPlayerGame
     if @player1.score > @player2.score
       puts "#{@player1.name} has won with #{@player1.score} points and #{@player1.lives} live(s) remaining"
     else
-      puts "#{@player1.name} has won with #{@player1.score} points and #{@player2.lives} live(s) remaining"
+      puts "#{@player2.name} has won with #{@player2.score} points and #{@player2.lives} live(s) remaining"
     end
     @status = false
   end
