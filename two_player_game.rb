@@ -9,6 +9,7 @@ class TwoPlayerGame
     @passes = 0
     @failures = 0
     @question = nil
+    @operations = [:+ , :-, :*, :/]
   end
 
   #
@@ -53,7 +54,7 @@ class TwoPlayerGame
   # @return # => Boolean (through validate_answer method)
   #
   def validate_answer(answer)
-    answer == @question.reduce(:+) 
+    answer == @question[0..1].reduce(@question[2]) 
   end
 
   #
@@ -78,7 +79,7 @@ class TwoPlayerGame
     if @player1.score > @player2.score
       puts "#{@player1.name} has won with #{@player1.score} points and #{@player1.lives} live(s) remaining"
     else
-      puts "#{@player1.name} has won with #{@player1.score} points and #{@player2.lives} live(s) remaining"
+      puts "#{@player2.name} has won with #{@player2.score} points and #{@player2.lives} live(s) remaining"
     end
     @status = false
   end
@@ -90,8 +91,8 @@ class TwoPlayerGame
   #
   def generate_question
     @players.each do |player|
-      @question = [rand(1..20), rand(1..20)]
-      puts "\n#{player.name}: What does #{@question[0]} plus #{@question[1]} equal?"
+      @question = [rand(1..20), rand(1..20), @operations.sample]
+      puts "\n#{player.name}: What does #{@question[0]} #{@question[2].to_s} #{@question[1]} equal?"
       if prompt_player_for_answer
         player.score += 1
         @passes += 1 
