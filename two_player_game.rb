@@ -10,6 +10,7 @@ class TwoPlayerGame
     @failures = 0
     @question = nil
     @operations = [:+ , :-, :*, :/]
+    @replay = false
   end
 
   #
@@ -18,10 +19,21 @@ class TwoPlayerGame
   # @return # => nil
   #
   def player_info
-    @players.each do |player|
-      puts "Introduce yourselves:"
-      player.name = gets.chomp
+    if @replay == false
+        @players.each do |player|
+          puts "Introduce yourselves:"
+          player.name = gets.chomp
+        end
+    else
+      reset 
     end
+  end
+
+  def reset
+    @passes = 0 
+    @failures = 0
+    @player1.lives = 3
+    @player2.lives = 3
   end
 
   #
@@ -32,7 +44,6 @@ class TwoPlayerGame
   def game_stats
     puts "\nNumber of passes: #{@passes}"
     puts "Number of failures: #{@failures}"
-
     puts "Party Time!" if @passes >= 8
   end
 
@@ -42,8 +53,8 @@ class TwoPlayerGame
   # @return # => Boolean (through validate_answer method)
   #
   def prompt_player_for_answer
-    puts "What is your answer?"
-    answer = gets.chomp.to_i
+    puts "What is your answer? (Round to two decimal places)"
+    answer = gets.chomp.to_f
     validate_answer(answer)
   end
 
@@ -54,7 +65,11 @@ class TwoPlayerGame
   # @return # => Boolean (through validate_answer method)
   #
   def validate_answer(answer)
-    answer == @question[0..1].reduce(@question[2]) 
+    if @question.include?(:/)
+      answer == @question[0].fdiv(@question[1]).round(2)
+    else
+      answer == @question[0..1].reduce(@question[2])
+    end 
   end
 
   #
@@ -116,6 +131,17 @@ class TwoPlayerGame
       score
       game_stats
       break if @status == false
+    end
+    puts "\nDo you want to play again? (y|n)"
+    m = gets.chomp
+    if m == "y"
+      @replay = true
+      @status = true
+      two_game
+    elsif m == "n"
+      puts  "Goodbye!"
+    else
+      puts "Didn't understand that. Leaving anyway"
     end
   end
 end
