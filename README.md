@@ -5,3 +5,7 @@ Two player guessing game. Each player gets a chance to answer an addition questi
 # Learning Objectives
 
 Use of ruby classes - There are two classes. One for the players and one for the game. Each class stores its attributes using instance variables to allow tracking of the game progress.
+
+One instance of the game class is used until the end of the game. Restarting the game creates a new instance.
+
+Have fun!
